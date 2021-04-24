@@ -18,6 +18,8 @@ public class EnemyAI : MonoBehaviour
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
 
+    public ParticleSystem deathVFX;
+
     private Vector3 velocity;
     bool isGrounded;
     bool isSprinting = false;
@@ -30,13 +32,18 @@ public class EnemyAI : MonoBehaviour
     float TimerForNextAttack, Cooldown = 3f;
 
     float dmg = 1f;
-    float health = 1f;
+    public float health = 1f;
 
     public AudioClip[] deaths;
     public AudioSource audioSource;
 
+    public GameObject particleList;
+
+
     private void Start()
     {
+        particleList = GameObject.Find("ParticleList");
+        deathVFX.Stop();
         player = GameObject.FindGameObjectWithTag("Player");
         target = player.transform;
         TimerForNextAttack = Cooldown;
@@ -61,7 +68,7 @@ public class EnemyAI : MonoBehaviour
             velocity.y = -2f;
 
 
-        if (target == player.transform)
+        if (target != null && target == player.transform)
         {
             transform.LookAt(target.position);
             Vector3 move = transform.forward;
@@ -83,24 +90,11 @@ public class EnemyAI : MonoBehaviour
                     TimerForNextAttack = Cooldown;
                 }
             }
-
-        }
-        /*
-        Vector3 move = transform.right * x + transform.forward * z;
-
-        if (isSprinting)
-            controller.Move(move * speed * sprintFactor * Time.deltaTime);
-        else
-            controller.Move(move * speed * Time.deltaTime);
-
-
-
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        } else
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        }*/
-
-
+            player = GameObject.FindGameObjectWithTag("Player");
+            target = player.transform;
+        }
 
         velocity.y += gravity * Time.deltaTime;
 
@@ -115,7 +109,7 @@ public class EnemyAI : MonoBehaviour
             .TakeDamage(dmg);
     }
 
-    public void TakeDamage(float amount)
+    public float TakeDamage(float amount)
     {
         if (health > amount)
         {
@@ -124,23 +118,31 @@ public class EnemyAI : MonoBehaviour
         else if (health <= amount)
         {
             health = 0;
-            StartCoroutine("Die");
+            Die();
         }
-        Debug.Log(health);
+        return health;
 
     }
-
     private void OnDestroy()
     {
-
-    }
-    IEnumerator Die()
-    {
+        // How can I delete this after a few Seconds!
+        var t = Instantiate(new GameObject(), transform);
+        var a = t.AddComponent<AudioSource>();
+        a = audioSource;
         int randomIndex = Random.Range(0, deaths.Length);
         audioSource.PlayOneShot(deaths[randomIndex]);
-
         yield return new WaitForSeconds(deaths[randomIndex].length);
-        
+
+    }
+
+    void Die()
+    {        
         Destroy(gameObject);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireCube(transform.position, new Vector3(2, 4, 2));
     }
 }

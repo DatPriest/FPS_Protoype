@@ -19,11 +19,6 @@ public class PlayerAttack : MonoBehaviour
         Cooldown = audioSource.clip.length - 0.7f;
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-    }
-
     void Attack(Transform target)
     {
         if (target.tag == "Enemy")

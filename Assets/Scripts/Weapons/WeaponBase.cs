@@ -69,11 +69,19 @@ public abstract class WeaponBase : MonoBehaviour
             Transform objectHit = hit.transform;
             if (!isPlayer && objectHit.CompareTag("Enemy"))
             {
-                //Debug.Log("Is Enemy");
-                //Debug.Log($"Objecthit : {objectHit.tag}");
+                EnemyAI enemy = objectHit.GetComponent<EnemyAI>();
 
-                objectHit.GetComponent<EnemyAI>().TakeDamage(dmg);
-                Debug.Log($"Killed {hit.transform.name}");
+                var enemyHealth = objectHit.GetComponent<EnemyAI>().TakeDamage(dmg);
+                if ( enemyHealth <= 0)
+                {
+                    GameObject.FindGameObjectWithTag("HUD")
+                        .GetComponent<HUD>()
+                        .AddScore(1);
+
+                    if (enemyHealth < 0)
+                        Debug.Log(enemyHealth);
+                                                
+                }
 
             }
             else Debug.Log($"Objecthit : {objectHit.tag}");

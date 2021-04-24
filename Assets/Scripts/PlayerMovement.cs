@@ -103,7 +103,6 @@ public class PlayerMovement : MonoBehaviour
     void Dash(float x, float z)
     {
         controller.Move(transform.right * dashMultiplier + transform.forward * dashMultiplier);
-        Camera.main.
     }
 
     private void OnDrawGizmos()

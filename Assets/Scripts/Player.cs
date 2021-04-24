@@ -1,10 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     public float health = 100;
+    public float Health {
+        get
+        {
+            return health;
+        }
+        set 
+        {
+            health = value;
+            hud.healthText.text = health.ToString();
+        }
+    }
+
+    public HUD hud;
 
     public float lastHealth;
 
@@ -17,9 +31,11 @@ public class Player : MonoBehaviour
     protected PlayerMovement pM;
 
     private void Start()
-    {        
+    {
+        hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
+        hud.healthText.text = Health.ToString();
         pM = gameObject.GetComponent<PlayerMovement>();
-        lastHealth = health;
+        lastHealth = Health;
         activeWeapon = weapon.GetComponent<Shotgun>();
     }
 
@@ -28,10 +44,10 @@ public class Player : MonoBehaviour
         Ray ray = GetComponentInChildren<Camera>().ScreenPointToRay(Input.mousePosition);
         Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow);
 
-        if (lastHealth != health)
+        if (lastHealth != Health)
         {
-            Debug.Log($"I've lost some Health {lastHealth - health}, Health:{health}");
-            lastHealth = health;
+            Debug.Log($"I've lost some Health {lastHealth - Health}, Health:{Health}");
+            lastHealth = Health;
         }
 
         if (Input.GetButtonDown("Fire1"))
@@ -52,10 +68,10 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
-        if (health > amount)
+        if (Health > amount)
         {
-            health -= amount;
-        } else if (health <= amount)
+            Health -= amount;
+        } else if (Health <= amount)
         {
             playerDied();
         }
@@ -63,9 +79,10 @@ public class Player : MonoBehaviour
 
     void playerDied()
     {
-        health = 0f;
+        Health = 0f;
         Time.timeScale = 0f;
     }
+
 }
 
 
