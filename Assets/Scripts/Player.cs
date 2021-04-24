@@ -30,6 +30,8 @@ public class Player : MonoBehaviour
 
     protected PlayerMovement pM;
 
+    private GameObject target;
+
     private void Start()
     {
         hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUD>();
@@ -43,6 +45,10 @@ public class Player : MonoBehaviour
     {
         Ray ray = GetComponentInChildren<Camera>().ScreenPointToRay(Input.mousePosition);
         Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+            //
+
 
         if (lastHealth != Health)
         {
@@ -58,6 +64,11 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Fire2"))
         {
             activeWeapon.SecondaryFire();
+        }
+
+        if (Input.GetButtonDown("Use") && target.GetComponent<Interactable>().isInteractable) 
+        { 
+            //target.GetComponent<Interactable>();
         }
 
         if (Input.GetKeyDown(KeyCode.R))

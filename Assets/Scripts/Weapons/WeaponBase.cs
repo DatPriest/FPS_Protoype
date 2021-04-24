@@ -69,9 +69,7 @@ public abstract class WeaponBase : MonoBehaviour
             Transform objectHit = hit.transform;
             if (!isPlayer && objectHit.CompareTag("Enemy"))
             {
-                EnemyAI enemy = objectHit.GetComponent<EnemyAI>();
-
-                var enemyHealth = objectHit.GetComponent<EnemyAI>().TakeDamage(dmg);
+                float enemyHealth = objectHit.GetComponent<EnemyAI>().TakeDamage(dmg);
                 if ( enemyHealth <= 0)
                 {
                     GameObject.FindGameObjectWithTag("HUD")
@@ -79,10 +77,8 @@ public abstract class WeaponBase : MonoBehaviour
                         .AddScore(1);
 
                     if (enemyHealth < 0)
-                        Debug.Log(enemyHealth);
-                                                
+                        Debug.Log(enemyHealth);                                                
                 }
-
             }
             else Debug.Log($"Objecthit : {objectHit.tag}");
         }

@@ -353,7 +353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec149b4598ae7f44a1e83efc930cfe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 100
+  mouseSensitivity: 200
   playerBody: {fileID: 3874206475225245350}
 --- !u!1 &3874206475225245344
 GameObject:
@@ -441,8 +441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  healthText: {fileID: 0}
-  scoreText: {fileID: 0}
+  hud: {fileID: 0}
   lastHealth: 0
   dmg: 1
   canAttack: 0
@@ -470,6 +469,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 1024
+  rb: {fileID: 0}
   lastKey: 0
 --- !u!82 &4029580328812802884
 AudioSource:

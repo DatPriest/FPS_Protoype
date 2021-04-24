@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
 
+    public Rigidbody rb;
+
     public KeyCode lastKey;
     public Event e;
 
@@ -31,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         controller = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
         groundCheck = transform.Find("GroundCheck").transform;
         groundMask = LayerMask.GetMask("Ground");
     }
@@ -102,13 +105,13 @@ public class PlayerMovement : MonoBehaviour
 
     void Dash(float x, float z)
     {
-        controller.Move(transform.right * dashMultiplier + transform.forward * dashMultiplier);
+        controller.Move((_currentPos - _prevPos).normalized * dashMultiplier);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawRay(transform.position, (_currentPos - _prevPos).normalized * 10);
+        Gizmos.DrawRay(transform.position, (_currentPos - _prevPos).normalized * dashMultiplier);
     }
 }
 

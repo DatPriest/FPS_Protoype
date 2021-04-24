@@ -123,20 +123,16 @@ public class EnemyAI : MonoBehaviour
         return health;
 
     }
+
     private void OnDestroy()
-    {
-        // How can I delete this after a few Seconds!
-        var t = Instantiate(new GameObject(), transform);
-        var a = t.AddComponent<AudioSource>();
-        a = audioSource;
-        int randomIndex = Random.Range(0, deaths.Length);
-        audioSource.PlayOneShot(deaths[randomIndex]);
-        yield return new WaitForSeconds(deaths[randomIndex].length);
+    {     
 
     }
 
     void Die()
-    {        
+    {
+        int randomIndex = Random.Range(0, deaths.Length);
+        AudioSource.PlayClipAtPoint(deaths[randomIndex], transform.position);
         Destroy(gameObject);
     }
 
